@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Calm Down</title>
+  <link rel="stylesheet" href="calmdown.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .container { /* Hintergrundbild */
+      position: relative; 
+      width: 100vw;
+      height: 100vh;
+      background-image: url('Palme.jpeg'); 
+      background-size: cover;
+      background-position: bottom, center; /* Bei Laptopgrösse der Ausschnitt des Bildes */
+      overflow: hidden; /* Verhindert Scrollen */
+    }
+
+    .overlay { /* Farbverlauf links*/
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100px;
+      height: 100%;
+      background: linear-gradient(to bottom, rgba(255, 230, 0, 0.2), rgba(255, 180, 0, 0.2), rgba(255, 130, 20, 0.2));
+
+    }
+
+    .overlay2 { /* Farbverlauf rechts*/
+      position: absolute;
+      top: 0;
+      left: 100px; /* Abstand von der linken Seite */
+      width: 100px;
+      height: 200%;
+      background: linear-gradient(to bottom, rgba(255, 100, 50, 0.2), rgba(220, 40, 30, 0.2), rgba(160, 0, 0, 0.2));
+    }
+
+    .overlay3 { /* Horizontaler Verlauf ganz unten, von links nach rechts */
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100vw;
+      height: 200px;
+      background: linear-gradient(to bottom, rgba(255, 230, 0, 0.2), rgba(255, 180, 0, 0.2), rgba(255, 130, 20, 0.2));
+      z-index: 1;
+    }
+
+    .overlay4 { /* Zweiter Verlauf darüber */
+      position: absolute;
+      bottom: 200px; /* direkt über overlay3 */
+      left: 0;
+      width: 100vw;
+      height: 200px;
+      background: linear-gradient(to bottom, rgba(255, 100, 50, 0.2), rgba(220, 40, 30, 0.2), rgba(160, 0, 0, 0.2));
+      z-index: 2;
+    }
+
+
+
+    /* Texte Vertikal */
+
+    .text-vertical { /* Beide Texte Vertikal */
+      position: absolute;
+      top: 0;
+      left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* Mittig zur Höhe */
+      height: 100%;
+      font-size: 100px;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 5px;
+      align-items: center; /* Zentriert den Text */
+      z-index: 10;
+    }
+
+    .text-vertical.calm {
+      left: 7px; /* erste Spalte links */
+      z-index: 10;
+    }
+
+    .text-vertical.down {
+      left: 103px; /* zweite Spalte etwas weiter rechts */
+      top: auto;
+      bottom: 20px;
+      justify-content: flex-end;
+    }
+
+   
+
+    .play-button { /* Play-Button */
+      position: absolute;
+      top: 60px;
+      right: 40px;
+      width: 70px;
+      height: 70px;
+      background: transparent; /* Kein weißer Hintergrund */
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      padding: 0;
+    
+    }
+
+    .play-button:hover {
+      transform: scale(3.2);
+
+    }
+
+    .play-button img { /* Gif Schalplatte */
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      pointer-events: none; /* falls nötig */
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="overlay"></div>
+    <div class="overlay2"></div>
+    <div class="overlay3"></div>
+    <div class="overlay4"></div>
+  
+    <div class="text-vertical calm" id="calm-text">
+      <div class="wave">C</div>
+      <div class="wave">A</div>
+      <div class="wave">L</div>
+      <div class="wave">M</div>
+    </div>
+    
+    <div class="text-vertical down">
+      <div class="wave">D</div>
+      <div class="wave">O</div>
+      <div class="wave">W</div>
+      <div class="wave">N</div>
+    </div>
+    
+    <button class="play-button">
+      <img src="schallplatte.gif" alt="Play" />
+    </button>
+    
+    <audio id="audio-player" src="calm_down.mp3"></audio>
+    
+
+  </div>
+<script>
+    const audio = document.getElementById("audio-player");
+    const playButton = document.querySelector(".play-button");
+    const textContainers = document.querySelectorAll(".text-vertical");
+    const calmText = document.querySelector(".text-vertical.calm");
+    const oElement = document.querySelector('.text-vertical.down .wave:nth-child(2)');
+
+    let isPlaying = false;
+
+    playButton.addEventListener("click", () => {
+      isPlaying = !isPlaying;
+
+      if (isPlaying) {
+        audio.currentTime = 0;
+        audio.play();
+
+        textContainers.forEach(el => el.classList.add("animate"));
+        calmText.classList.add("animate"); // Calm Bewegung
+        oElement.classList.add("rotate");  // O drehen
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+
+        textContainers.forEach(el => el.classList.remove("animate"));
+        calmText.classList.remove("animate"); // Calm Bewegung stoppen
+        oElement.classList.remove("rotate");  // O stoppen
+      }
+    });
+  </script>
+  
+  
+  
+</body>
+</html>
